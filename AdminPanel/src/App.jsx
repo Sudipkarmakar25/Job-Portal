@@ -1,4 +1,6 @@
 
+
+
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Home from "./Pages/Home";
@@ -14,76 +16,40 @@ import AdminProfile from "./Pages/AdminProfile";
 import SuperadminDashboard from "./Pages/SuperadminDashboard";
 
 function App() {
-  const [role, setRole] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleLogin = (role) => {
-    setRole(role);
-    setIsAuthenticated(true);
-  };
-
-  const handleLogout = () => {
-    setRole(null);
-    setIsAuthenticated(false);
-  };
+  const handleLogout = () => setUser(null);
 
   return (
     <Router>
-      {/* Show Navbar only if not logged in */}
-      {!isAuthenticated ? <Navbar /> : <Header setRole={setRole} setIsAuthenticated={setIsAuthenticated} handleLogout={handleLogout} />}
+      {user ? <Header handleLogout={handleLogout} user={user} /> : <Navbar />}
 
       <Routes>
-        {/* Always show Login as the default page */}
-        <Route path="/login" element={<Login handleLogin={handleLogin} />} />
+        <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/createaccount" element={<CreateAccount />} />
-
-        {/* Redirect to login if not authenticated */}
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              role === "admin" ? (
-                <Home />
-              ) : role === "superadmin" ? (
-                <SuperadminDashboard />
-              ) : (
-                <Navigate to="/login" />
-              )
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+        {/* <Route path="/" element={user ? (user.role === "admin" ? <Home /> : <SuperadminDashboard />) : <Navigate to="/login" />} /> */}
+        
+        <Route path="/" element={user ? <Home user={user}/> : <Navigate to="/login" />} />
 
         {/* Admin Routes */}
-        <Route
-          path="/adminprofile"
-          element={isAuthenticated && role === "admin" ? <AdminProfile /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/internships"
-          element={isAuthenticated && role === "admin" ? <Internships /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/jobs"
-          element={isAuthenticated && role === "admin" ? <Jobs /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/addjobs"
-          element={isAuthenticated && role === "admin" ? <AddJobs /> : <Navigate to="/login" />}
-        />
+        <Route path="/adminprofile" element={user? <AdminProfile /> : <Navigate to="/login" />} />
+        <Route path="/internships" element={user? <Internships /> : <Navigate to="/login" />} />
+        <Route path="/jobs" element={user? <Jobs /> : <Navigate to="/login" />} />
+        <Route path="/addjobs" element={user? <AddJobs /> : <Navigate to="/login" />} />
+       
+
 
         {/* Superadmin Route */}
-        <Route
-          path="/superadmin"
-          element={isAuthenticated && role === "superadmin" ? <SuperadminDashboard /> : <Navigate to="/login" />}
+        <Route 
+          path="/superadmin" 
+          element={user && user.role === "superadmin" ? <SuperadminDashboard /> : <Navigate to="/login" />} 
         />
 
-        {/* Catch-all Route: Redirect to login if not authenticated */}
+
+        {/* Catch-all Route */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
 
-      {/* Show Footer only if logged in */}
       <Footer />
     </Router>
   );
