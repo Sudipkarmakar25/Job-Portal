@@ -1,16 +1,38 @@
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateAccount = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    contact: "",
+    password: "",
+    confirmPassword: "",
+    photo: null,
+  });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setFormData({ ...formData, photo: reader.result });
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
+
+    const { name, email, contact, password, confirmPassword, photo } = formData;
 
     if (!name || !email || !contact || !password || !confirmPassword) {
       setError("All fields are required.");
@@ -22,70 +44,46 @@ const CreateAccount = () => {
       return;
     }
 
-    console.log("Creating account with", { name, email, contact, password });
+    const newRequest = { name, email, contact, photo };
+    const pendingRequests = JSON.parse(localStorage.getItem("pendingAdmins")) || [];
+    localStorage.setItem("pendingAdmins", JSON.stringify([...pendingRequests, newRequest]));
+
+    navigate("/login");
   };
 
   return (
-    <div className="flex items-center justify-center w-1/2 bg-white">
-      <div className="w-full max-w-sm p-6 bg-slate-300 rounded-lg shadow-md">
+    <div className="flex flex-col min-h-screen items-center justify-center bg-amber-100">
+      <div className="w-full max-w-md p-6 bg-amber-50 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-center">Create Account</h2>
         {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
         <form onSubmit={handleSubmit} className="mt-4">
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Name</label>
+          {['name', 'email', 'contact', 'password', 'confirmPassword'].map((field, index) => (
             <input
-              type="text"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-blue-300"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              key={index}
+              type={field.includes("password") ? "password" : field === "contact" ? "tel" : "text"}
+              name={field}
+              placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+              className="w-full px-3 py-2 border rounded-md mt-2"
+              value={formData[field]}
+              onChange={handleChange}
               required
             />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Email</label>
-            <input
-              type="email"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-blue-300"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+          ))}
+          <input
+            type="file"
+            accept="image/*"
+            className="w-full px-3 py-2 border rounded-md mt-2"
+            onChange={handlePhotoChange}
+          />
+          {formData.photo && (
+            <img
+              src={formData.photo}
+              alt="Preview"
+              className="mt-2 w-20 h-20 rounded-full object-cover mx-auto"
             />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Contact Number</label>
-            <input
-              type="tel"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-blue-300"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Password</label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-blue-300"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Confirm Password</label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-blue-300"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
-          >
-            Create Account
+          )}
+          <button type="submit" className="w-full px-4 py-2 bg-blue-500 text-white rounded-md mt-4">
+            Request Account
           </button>
         </form>
       </div>
