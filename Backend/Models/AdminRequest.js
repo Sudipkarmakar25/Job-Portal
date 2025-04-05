@@ -8,13 +8,12 @@ const AdminRequestSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   password: { type: String, required: true },
   role: { type: String, default: "user" },
+  jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }] 
 });
-
 
 AdminRequestSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-
 
 AdminRequestSchema.methods.generateAuthToken = function () {
   const payload = {
@@ -24,12 +23,11 @@ AdminRequestSchema.methods.generateAuthToken = function () {
     role: this.role,
   };
 
-
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "7d", 
+    expiresIn: "7d",
   });
 
   return token;
 };
 
-module.exports = mongoose.model("AdminRequest", AdminRequestSchema);
+module.exports = mongoose.models.AdminRequest || mongoose.model("AdminRequest", AdminRequestSchema);

@@ -1,3 +1,6 @@
+
+
+
 const AdminRequest = require("../Models/AdminRequest");
 const bcrypt = require('bcryptjs');
 
@@ -139,6 +142,7 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+   
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required." });
     }
@@ -147,26 +151,27 @@ const loginUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
-
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
     const token = user.generateAuthToken();
+
     const loggedInUser = await AdminRequest.findById(user._id).select("-password");
 
     const options = {
       httpOnly: true,
-      secure: false,
-      sameSite: "Lax",
+      secure: false, 
+      sameSite: "Lax", 
+      path: "/", 
       maxAge: 24 * 60 * 60 * 1000, 
     };
+    
 
-    res.cookie("accessToken", token, options);
-
-    return res.status(200).json({
+    return res.status(200).cookie("accessToken", token, options).json({
       user: loggedInUser,
+      accessToken: token,
       message: "User logged in successfully",
     });
   } catch (error) {
@@ -175,6 +180,25 @@ const loginUser = async (req, res) => {
   }
 };
 
+const logoutUser = async (req, res) => {
+  try {
+    return res
+      .status(200)
+      .clearCookie("accessToken", {
+        httpOnly: true,
+        secure: false, 
+        sameSite: "Lax",
+        path: "/",
+      })
+      .json({ message: "User logged out successfully" });
+  } catch (error) {
+    console.error("Logout Error:", error.message);
+    return res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
 
 
-module.exports = { addRequest, getAllRequest,deleteRequest,confirmRequest,loginUser };
+
+
+
+module.exports = { addRequest, getAllRequest,deleteRequest,confirmRequest,loginUser,logoutUser };

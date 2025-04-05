@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const connectDb = require("./Database/db");
 const RequestRoutes = require('./Routes/AdminRequestRoutes');
+const JobRoutes = require('./Routes/JobRoutes.js');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
@@ -20,6 +21,7 @@ app.use(cors({
 
 
 app.use('/api/request', RequestRoutes);
+app.use('/api/jobs', JobRoutes);
 
 
 app.listen(PORT, () => {
