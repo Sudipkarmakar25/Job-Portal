@@ -177,5 +177,25 @@ const loginUser = async (req, res) => {
   }
 };
 
+const logoutUser = async (req, res) => {
+  try {
+    return res
+      .status(200)
+      .clearCookie("accessToken", {
+        httpOnly: true,
+        secure: false, 
+        sameSite: "Lax",
+        path: "/",
+      })
+      .json({ message: "User logged out successfully" });
+  } catch (error) {
+    console.error("Logout Error:", error.message);
+    return res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
 
-module.exports = { addRequest, getAllRequest,deleteRequest,confirmRequest,loginUser };
+
+
+
+
+module.exports = { addRequest, getAllRequest,deleteRequest,confirmRequest,loginUser,logoutUser };
