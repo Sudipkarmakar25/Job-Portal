@@ -5,7 +5,7 @@ import Logo from "../assets/Logo.webp";
 const Navbar = () => {
   return (
     // <nav className="flex justify-between items-center px-6 py-4 bg-amber-200 shadow-lg text-slate-900">
-    <header className="bg-amber-200 shadow-md sticky top-0 z-50">
+    <header className="bg-amber-500 shadow-md sticky top-0 z-50">
             <nav className="max-w-7xl mx-auto px-6 lg:px-12 py-3 flex items-center justify-between">
       
       {/* Logo Section */}

@@ -1,41 +1,50 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const Login = ({ handleLogin }) => {
+// Define a function to get the cookie by name
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+};
+
+const Login = ({ setUser }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Example admin credentials
-    const superadmin = { email: "superadmin@example.com", password: "123" };
-    const admin = { email: "admin@example.com", password: "123" };
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/request/login",
+        { email, password },
+        { withCredentials: true } // Allow cookies
+      );
 
-    // Check for superadmin credentials
-    if (email === superadmin.email && password === superadmin.password) {
-      handleLogin("superadmin");
-      navigate("/superadmin", { replace: true });
-      return;
+      const accessToken = getCookie('accessToken'); // Get the access token from cookies
+      console.log("Access Token:", accessToken);  // Log the access token
+
+      const user = response.data.user;
+      if (user) {
+        setUser(user);
+        Cookies.set("accessToken", response.data.accessToken, { path: "/" }); // Optional (if using non-HTTP-only cookie)
+        navigate("/", { replace: true });
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "Something went wrong.");
     }
-
-    // Check for admin credentials
-    if (email === admin.email && password === admin.password) {
-      handleLogin("admin");
-      navigate("/", { replace: true });
-      return;
-    }
-
-    setError("Invalid email or password.");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+    <div className="flex items-center justify-center min-h-screen bg-amber-100 shadow-md">
+      <div className="bg-amber-200 p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
@@ -69,12 +78,11 @@ const Login = ({ handleLogin }) => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition"
+            className="w-full bg-amber-500 text-teal-50 font-bold py-2 rounded hover:bg-amber-600 transition"
           >
             Login
           </button>
         </form>
-        
       </div>
     </div>
   );
