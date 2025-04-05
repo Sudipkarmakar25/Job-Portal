@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { CheckAdminorSuperAdmin } = require('../Middleware/CheckAdminorSuperAdmin');
-const { UploadImageMiddleWare } = require('../Middleware/UploadImageMiddleware');
+const { UploadImageMiddleWare } = require('../Middleware/UploadImageMiddleWare');
 
 const { addJob,getAllJob,getAllInternship,deleteJob } = require('../Controllers/JobController');
 
