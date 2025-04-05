@@ -44,7 +44,7 @@ const Login = ({ setUser }) => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-amber-100 shadow-md">
-      <div className="bg-amber-50 p-8 rounded-lg shadow-md w-96">
+      <div className="bg-amber-200 p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
@@ -78,7 +78,7 @@ const Login = ({ setUser }) => {
           </div>
           <button
             type="submit"
-            className="w-full bg-amber-200 text-red-700 font-semibold py-2 rounded hover:bg-amber-300 transition"
+            className="w-full bg-amber-500 text-teal-50 font-bold py-2 rounded hover:bg-amber-600 transition"
           >
             Login
           </button>

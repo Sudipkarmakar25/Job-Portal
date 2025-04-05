@@ -211,39 +211,41 @@ const SuperadminDashboard = () => {
   }
 
   return (
-    <div className="p-5 max-w-4xl mx-auto">
+    <div className="p-5 flex flex-col items-center min-h-screen mx-auto bg-amber-100 justify-center ">
       
-      <div className="bg-white shadow-md rounded-lg p-5 mb-6">
-        <h2 className="text-2xl text-center font-semibold mb-4">User Requests</h2>
+      <div className="bg-amber-200 shadow-md rounded-lg p-5 mb-6 w-2/3">
+        <h2 className="text-2xl text-center font-semibold    mb-4">Admin Requests</h2>
+        {/* <h2 className="text-2xl text-center font-semibold mb-4" style={{ color: 'rgb(45, 55, 72)' }}>Admin Requests</h2> */}
+
         <ul>
           {requests.map((request) => (
-            <li key={request._id} className="flex justify-between items-center bg-gray-100 p-3 mb-2 rounded-lg shadow-sm">
-              <div className="flex flex-col">
+            <li key={request._id} className="flex justify-between items-center bg-amber-50 p-3 mb-2 rounded-lg shadow-sm">
+              <div className="flex flex-col ">
               <span><strong>Name:</strong> {request.name}</span>
               <span><strong>Email:</strong> {request.email}</span>
               <span><strong>Phone:</strong> {request.phone}</span>
               
               </div>
               <div className="flex space-x-2 ml-auto">
-                <button onClick={() => handleApprove(request._id)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">Approve</button>
-                <button onClick={() => handleReject(request._id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">Reject</button>
+                <button onClick={() => handleApprove(request._id)} className="bg-green-400 text-white px-3 py-1 font-semibold rounded-md hover:bg-green-600">Approve</button>
+                <button onClick={() => handleReject(request._id)} className="bg-red-400 text-white px-3 py-1 rounded-md font-semibold hover:bg-red-600">Reject</button>
               </div>
             </li>
           ))}
         </ul>
       </div>
-      <div className="bg-white shadow-md rounded-lg p-5">
+      <div className="bg-amber-200 shadow-md rounded-lg p-5 w-2/3 ">
         <h2 className="text-2xl text-center font-semibold mb-4">Admins</h2>
         <ul>
           {admins.map((admin) => (
-            <li key={admin._id} className="flex justify-between items-center bg-gray-100 p-3 mb-2 rounded-lg shadow-sm">
+            <li key={admin._id} className="flex justify-between items-center bg-amber-50 p-3 mb-2 rounded-lg shadow-sm">
               <div className="flex flex-col">
               <span><strong>Name:</strong> {admin.name}</span>
               <span><strong>Email:</strong> {admin.email}</span>
               <span><strong>Phone:</strong> {admin.phone}</span>
               </div>
               <div className="flex space-x-2 ml-auto">
-                <button onClick={() => handleReject(admin._id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">Remove</button>
+                <button onClick={() => handleReject(admin._id)} className="bg-red-400 text-white font-semibold px-3 py-1 rounded-md hover:bg-red-600">Remove</button>
               </div>
             </li>
           ))}

@@ -11,7 +11,7 @@ export default function Header({ handleLogout, user }) {
   };
 
   return (
-    <header className="bg-amber-200 shadow-md sticky top-0 z-50">
+    <header className="bg-amber-500 shadow-md sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-6 lg:px-12 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link to="/adminprofile" className="flex items-center pl-5 ml-5 hover:scale-105">
@@ -20,7 +20,7 @@ export default function Header({ handleLogout, user }) {
             alt="Company Logo" 
             className="w-14 h-14 rounded-full shadow-lg transition-transform"
           />
-          <span className="text-xl font-semibold">AdminProfile</span>
+          <span className="text-xl font-bold">AdminProfile</span>
         </Link>
 
         {/* Navigation Links */}
@@ -30,30 +30,32 @@ export default function Header({ handleLogout, user }) {
               to="/"
               onClick={handleHomeClick}
               className={({ isActive }) =>
-                `px-3 py-1 transition ${isActive ? "text-orange-700 font-semibold" : "text-gray-700 hover:text-orange-700"}`
+                `px-3 py-1 transition ${isActive ? "text-orange-700 font-semibold" : "text-gray-700 hover:text-orange-800"}`
               }
             >
-              Home
+              <span className='font-bold'>Home</span>
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/internships"
               className={({ isActive }) =>
-                `px-3 py-1 transition ${isActive ? "text-orange-700 font-semibold" : "text-gray-700 hover:text-orange-700"}`
+                `px-3 py-1 transition ${isActive ? "text-orange-700 font-semibold" : "text-gray-700 hover:text-orange-800"}`
               }
             >
-              Internships
+              <span className='font-bold'>Internships</span>
+              
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/jobs"
               className={({ isActive }) =>
-                `px-3 py-1 transition ${isActive ? "text-orange-700 font-semibold" : "text-gray-700 hover:text-orange-700"}`
+                `px-3 py-1 transition ${isActive ? "text-orange-700 font-semibold" : "text-gray-700 hover:text-orange-800"}`
               }
             >
-              Jobs
+              <span className='font-bold'>Jobs</span>
+              
             </NavLink>
           </li>
           <li>
@@ -63,7 +65,8 @@ export default function Header({ handleLogout, user }) {
                 `px-3 py-1 transition ${isActive ? "text-orange-700 font-semibold" : "text-gray-700 hover:text-orange-700"}`
               }
             >
-              AddJobs
+              <span className='font-bold'>AddJobs</span>
+              
             </NavLink>
           </li>
 
@@ -72,7 +75,7 @@ export default function Header({ handleLogout, user }) {
             <li>
               <button
                 onClick={() => navigate("/superadmin")}
-                className="px-4 py-1 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition"
+                className="px-4 py-1 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transition"
               >
                 Admins
               </button>
@@ -83,7 +86,7 @@ export default function Header({ handleLogout, user }) {
           <li>
             <button
               onClick={handleLogout}
-              className="px-4 py-1 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition"
+              className="px-4 py-1 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 transition"
             >
               Logout
             </button>
