@@ -77,7 +77,8 @@ const getAllJob = async (req, res) => {
 
 const getAllInternship = async (req, res) => {
     try {
-        const internships = await Job.find({ jobType: "internship" });
+        
+        const internships = await Job.find({ jobType: "Internship" });
         return res.status(200).json({
             message: "Internships fetched successfully",
             success: true,
