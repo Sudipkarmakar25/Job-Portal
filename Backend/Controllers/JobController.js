@@ -1,8 +1,9 @@
 const fs = require("fs");  
 const path = require("path");
-const Job = require("../models/Job");
+const Job = require("../Models/Job");
+const AdminRequest=require("../Models/AdminRequest")
 const { uploadToCloudinary } = require("../Helpers/CloudinaryHelper");
-
+const { deleteFromCloudinary } = require('../Helpers/deleteFromCloudinary');
 const DEFAULT_LOGO_URL = "https://example.com/default-logo.png"; 
 
 const addJob = async (req, res) => {
@@ -122,7 +123,7 @@ const deleteJob = async (req, res) => {
         await Job.findByIdAndDelete(jobId);
 
       
-        await Admin.findByIdAndUpdate(adminId, { $pull: { jobs: jobId } });
+        await AdminRequest.findByIdAndUpdate(adminId, { $pull: { jobs: jobId } });
 
         return res.status(200).json({
             message: "Job deleted successfully",
