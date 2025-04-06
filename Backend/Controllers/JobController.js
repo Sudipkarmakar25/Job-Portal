@@ -141,4 +141,63 @@ const deleteJob = async (req, res) => {
     }
 };
 
-module.exports = { addJob,getAllJob,getAllInternship,deleteJob };
+const Myjobs = async (req, res) => {
+    try {
+        const userId = req.params.id || req.user.id;
+        const userExists = await AdminRequest.findById(userId);
+        if (!userExists) {
+            return res.status(404).json({
+                message: "Admin user not found",
+                success: false
+            });
+        }
+
+        const jobs = await Job.find({ 
+            uploadedBy: userId, 
+            jobType: "Job" 
+        });
+
+        return res.status(200).json({
+            message: "Jobs fetched successfully",
+            success: true,
+            data: jobs
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: "Unexpected Error",
+            success: false,
+            error: error.message
+        });
+    }
+};
+
+const MyInternships=async(req,res)=>{
+    try {
+        const userId = req.user.id;
+        const userExists = await AdminRequest.findById(userId);
+        if (!userExists) {
+            return res.status(404).json({
+                message: "Admin user not found",
+                success: false
+            });
+        }
+
+        const jobs = await Job.find({ 
+            uploadedBy: userId, 
+            jobType: "Internship" 
+        });
+
+        return res.status(200).json({
+            message: "Jobs fetched successfully",
+            success: true,
+            data: jobs
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: "Unexpected Error",
+            success: false,
+            error: error.message
+        })
+    }
+}
+module.exports = { addJob,getAllJob,getAllInternship,deleteJob,Myjobs,MyInternships};

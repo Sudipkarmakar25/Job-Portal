@@ -5,15 +5,35 @@ const MyInternships = () => {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/jobs/myinternships") // ✅ Matches your backend route
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched jobs:", data); // For debugging
-        setJobs(data.data || []); // ✅ Your API sends { data: [...] }
-      })
-      .catch((error) => {
-        console.error("Failed to fetch jobs:", error);
-      });
+    const controller = new AbortController(); // For cleanup
+    const fetchJobs = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/jobs/myinternships", {
+          method: "GET",
+          credentials: "include", // ✅ Send cookies like accessToken
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          throw new Error(errorData.message || "Failed to fetch jobs.");
+        }
+
+        const data = await res.json();
+        console.log("Fetched jobs:", data);
+        setJobs(data.data || []);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("Failed to fetch jobs:", error.message);
+        }
+      }
+    };
+
+    fetchJobs();
+
+    return () => {
+      controller.abort(); // ✅ Cleanup fetch on unmount
+    };
   }, []);
 
   const handleEdit = (jobId) => {
@@ -21,17 +41,38 @@ const MyInternships = () => {
     // Implement navigation or modal open logic here
   };
 
-  const handleDelete = (jobId) => {
-    console.log("Delete clicked for job ID:", jobId);
-    // Implement delete logic here
+  const handleDelete = async (jobId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this job?");
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/api/jobs/delete/${jobId}`, {
+        method: "DELETE",
+        credentials: "include", // Send cookie for authentication
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.message || "Failed to delete the job.");
+      }
+
+      // Remove the deleted job from UI
+      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+      alert("Job deleted successfully.");
+    } catch (error) {
+      console.error("Delete error:", error.message);
+      alert(`Error: ${error.message}`);
+    }
   };
 
   return (
     <div className="bg-amber-100 shadow-md flex flex-col min-h-screen">
-
       <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-6 items-center">
         {jobs.length === 0 ? (
-          <p className="text-center col-span-full text-lg text-gray-600">No jobs available.</p>
+          <p className="text-center col-span-full text-lg text-gray-600">
+            No jobs available.
+          </p>
         ) : (
           jobs.map((job) => (
             <Card
@@ -49,6 +90,7 @@ const MyInternships = () => {
               applicationLink={job.applicationLink}
               onEdit={() => handleEdit(job._id)}
               onDelete={() => handleDelete(job._id)}
+              _id={job._id}
             />
           ))
         )}
