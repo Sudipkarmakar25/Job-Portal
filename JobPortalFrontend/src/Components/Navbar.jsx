@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
   return (
@@ -15,7 +16,11 @@ const Navbar = () => {
             key={index}
             className="text-white text-lg font-medium relative group cursor-pointer transition duration-200"
           >
-            {item}
+            <Link to={`/${item.replace(/\s+/g, '').toLowerCase()}`}> {/* Create a link for each item */}
+
+              {item}
+
+            </Link>
             {/* Underline on hover */}
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-400 transition-all group-hover:w-full"></span>
           </li>
