@@ -11,7 +11,7 @@ const jobSchema = new mongoose.Schema({
     requirements: { type: String },
     experience: { type: String },
     skills: { type: [String] },
-    applicationLink: { type: String },
+    applicationLink: { type: String,required:true},
     publicId: { type: String },
     uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'AdminRequest' },
     postedAt: { type: Date, default: Date.now },

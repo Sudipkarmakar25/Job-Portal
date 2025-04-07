@@ -200,4 +200,5 @@ const MyInternships=async(req,res)=>{
         })
     }
 }
+
 module.exports = { addJob,getAllJob,getAllInternship,deleteJob,Myjobs,MyInternships};
