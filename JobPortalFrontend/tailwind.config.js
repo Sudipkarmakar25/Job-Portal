@@ -2,14 +2,11 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}", // must match your file paths
   ],
   theme: {
     extend: {},
   },
   plugins: [],
-  corePlugins:{
-    preflight: false
-  }
+ 
 }
-
