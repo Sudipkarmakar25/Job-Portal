@@ -34,6 +34,29 @@ const Home = () => {
         </div>
         <div className="w-1/2 h-full"></div>
       </div>
+
+            {/* Features Section */}
+            <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-blue-900 mb-12">
+            Why Choose Career Horizon?
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {['Personalized Matching', 'AI-Powered Tools', 'Expert Support'].map((feature, index) => (
+              <div key={index} className="bg-blue-50 p-8 rounded-2xl transition-all duration-300 hover:transform hover:-translate-y-2">
+                <div className="bg-blue-600 w-16 h-16 rounded-xl mb-6 flex items-center justify-center text-white text-2xl">
+                  {index + 1}
+                </div>
+                <h3 className="text-2xl font-semibold text-blue-900 mb-4">{feature}</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 };
