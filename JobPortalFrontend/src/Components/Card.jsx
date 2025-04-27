@@ -14,7 +14,7 @@ const Card = ({
   applicationLink
 }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow w-11/12 max-w-5xl mx-auto mb-4 p-4 flex flex-col md:flex-row gap-4">
+    <div className="bg-white rounded-2xl shadow-lg shadow-blue-300 border border-gray-200 hover:shadow-md transition-shadow w-11/12 max-w-5xl mx-auto mb-4 p-4 flex flex-col md:flex-row gap-4">
       
       {/* Left Section - Logo/Company */}
       <div className="w-full md:w-1/6 flex items-center md:items-start gap-3">

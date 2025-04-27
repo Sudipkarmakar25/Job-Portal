@@ -11,7 +11,7 @@ const Navbar = () => {
 
       {/* Menu */}
       <ul className="flex space-x-8">
-        {['Home', 'About Us', 'Internships', 'Jobs', 'Notification'].map((item, index) => (
+        {['Home', 'About Us', 'Internships', 'Jobs', 'HR Desk'].map((item, index) => (
           <li
             key={index}
             className="text-white text-lg font-medium relative group cursor-pointer transition duration-200"

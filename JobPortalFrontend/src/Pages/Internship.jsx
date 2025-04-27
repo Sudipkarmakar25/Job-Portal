@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Card from "../Components/Card";
-
 const Internships = () => {
   const [jobs, setJobs] = useState([]);
 
@@ -64,7 +63,8 @@ const Internships = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-8">
+    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-8"
+    >
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-8 text-blue-800">
           All Internship Listings
