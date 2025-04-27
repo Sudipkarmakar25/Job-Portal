@@ -1,4 +1,6 @@
 import React from 'react';
+import sudip from "../assets/sudip.jpg";
+import sagnik from "../assets/sagnik.jpg";
 import { FaLinkedinIn, FaRegLightbulb, FaBullseye, FaRocket } from "react-icons/fa";
 import { TbBrandGithubFilled } from "react-icons/tb";
 
@@ -53,11 +55,12 @@ const About = () => {
             {teamMembers.map((member, index) => (
                 <div key={index} className="bg-white rounded-3xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-300 group">
                     <div className="relative mb-8">
-                        <img
-                            src={member.image}
-                            alt={member.name}
-                            className="w-full h-80 object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-300"
+                       <img
+                       src={member.image}
+                       alt={member.name}
+                       className="w-full h-80 object-top object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-300"
                         />
+
                         <div className="absolute inset-0 bg-gradient-to-t from-blue-900 opacity-0 group-hover:opacity-90 transition-opacity duration-300 rounded-2xl flex items-end p-6">
                             <p className="text-white text-base leading-relaxed">{member.bio}</p>
                         </div>
@@ -122,18 +125,18 @@ const teamMembers = [
     {
         name: "Sudip Karmakar",
         role: "Backend Developer",
-        image: "https://example.com/rahul.jpg",
+        image: sudip,
         linkedin: "#",
         github: "#",
-        bio: "Tech visionary with 10+ years in EdTech"
+        bio: "Third year B.tech student at NIT Agartala"
     },
     {
       name: "Sagnik das",
       role: "Backend Developer",
-      image: "https://example.com/rahul.jpg",
+      image: sagnik,
       linkedin: "#",
       github: "#",
-      bio: "Tech visionary with 10+ years in EdTech"
+      bio: "Third year B.tech student at NIT Agartala"
     }
    
 ];
