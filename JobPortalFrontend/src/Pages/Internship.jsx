@@ -8,7 +8,7 @@ const Internships = () => {
 
     const fetchAllInternships = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/jobs/getAllInternships", {
+        const res = await fetch("https://backendjob-nu.vercel.app/api/jobs/getAlljobs", {
           method: "GET",
           credentials: "include",
           signal: controller.signal,
