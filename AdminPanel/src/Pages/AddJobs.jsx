@@ -13,7 +13,7 @@ const AddJobs = () => {
     company: "",
     logo: "",
     requirements: "",
-    exprerience: "",
+    experience: "",
     skills: "",
     applicationLink: "",
   });
@@ -85,7 +85,7 @@ const AddJobs = () => {
         skills: "",
         applicationLink: "",
       });
-  
+    console.log(jobData)
       navigate("/");
     } catch (error) {
       console.error("Error submitting job:", error);

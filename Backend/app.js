@@ -9,27 +9,36 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Connect to MongoDB
 connectDb();
 
+// List of allowed frontend origins (Netlify URLs)
+const allowedOrigins = [
+  "https://capable-dieffenbachia-b3f3e0.netlify.app",
+  "https://gregarious-pixie-69d29d.netlify.app"
+];
 
-app.use(express.json());
-app.use(cookieParser());
-
+// CORS middleware for handling cross-origin cookies securely
 app.use(cors({
   origin: (origin, callback) => {
-    callback(null, true); // Allow all origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
   },
   credentials: true
 }));
 
-  
-  
+// Middleware to parse incoming requests
+app.use(express.json());
+app.use(cookieParser());
 
-
+// API routes
 app.use('/api/request', RequestRoutes);
 app.use('/api/jobs', JobRoutes);
 
-
+// Start server
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
