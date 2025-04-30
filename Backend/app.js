@@ -11,15 +11,15 @@ const PORT = process.env.PORT || 3000;
 
 connectDb();
 
-// Middleware
+
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(cors({
-    origin: (origin, callback) => {
-      callback(null, true); // Allow all origins
-    },
+    origin: 'https://shiny-stardust-db02b2.netlify.app',
     credentials: true
   }));
+  
   
 
 

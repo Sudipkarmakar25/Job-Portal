@@ -6,7 +6,7 @@ const AdminProfile = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("adminProfile");
     if (storedUser) {
-      setUser(JSON.parse(storedUser)); // Retrieve stored user data
+      setUser(JSON.parse(storedUser)); 
     }
   }, []);
 

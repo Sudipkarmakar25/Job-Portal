@@ -57,10 +57,10 @@ const AddJobs = () => {
         formData.append("logo", fileInput.files[0]);
       }
   
-      const response = await fetch("http://localhost:3000/api/jobs/jobs", {
+      const response = await fetch("https://backendjob-nu.vercel.app/api/jobs/jobs", {
         method: "POST",
         body: formData,
-        credentials: "include", // Important: send cookies!
+        credentials: "include", 
       });
   
       if (!response.ok) {

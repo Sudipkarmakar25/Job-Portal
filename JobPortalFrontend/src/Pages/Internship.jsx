@@ -8,7 +8,7 @@ const Internships = () => {
 
     const fetchAllInternships = async () => {
       try {
-        const res = await fetch("https://backendjob-nu.vercel.app/api/jobs/getAlljobs", {
+        const res = await fetch("https://backendjob-nu.vercel.app/api/jobs/getAllInternships", {
           method: "GET",
           credentials: "include",
           signal: controller.signal,
@@ -32,35 +32,6 @@ const Internships = () => {
 
     return () => controller.abort();
   }, []);
-
-  const handleEdit = (jobId) => {
-    console.log("Edit clicked for job ID:", jobId);
-    // Add modal opening or route navigation logic here
-  };
-
-  const handleDelete = async (jobId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this internship?");
-    if (!confirmDelete) return;
-
-    try {
-      const res = await fetch(`http://localhost:3000/api/jobs/delete/${jobId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || "Failed to delete the internship.");
-      }
-
-      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
-      alert("Internship deleted successfully.");
-    } catch (error) {
-      console.error("Delete error:", error.message);
-      alert(`Error: ${error.message}`);
-    }
-  };
 
   return (
     <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-8"
