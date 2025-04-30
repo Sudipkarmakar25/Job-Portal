@@ -9,7 +9,7 @@ const AllJobs = () => {
 
     const fetchAllJobs = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/jobs/getAlljobs", {
+        const res = await fetch("https://backendjob-nu.vercel.app/api/jobs/getAllJobs", {
           method: "GET",
           credentials: "include", // Include cookies like accessToken if needed
           signal: controller.signal,
@@ -45,7 +45,7 @@ const AllJobs = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/api/jobs/delete/${jobId}`, {
+      const res = await fetch(`https://backendjob-nu.vercel.app/api/jobs/delete/${jobId}`, {
         method: "DELETE",
         credentials: "include",
       });

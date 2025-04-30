@@ -115,7 +115,7 @@ const SuperadminDashboard = () => {
       setError(null);
 
       try {
-        const response = await fetch("http://localhost:3000/api/request/getAllRequests", {
+        const response = await fetch("https://backendjob-nu.vercel.app/api/request/getAllRequests", {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
           credentials: "include",  
@@ -159,7 +159,7 @@ const SuperadminDashboard = () => {
     try {
       const token = Cookies.get("accessToken");
   
-      const response = await fetch(`http://localhost:3000/api/request/confirmRequest/${id}`, {
+      const response = await fetch(`https://backendjob-nu.vercel.app/api/request/confirmRequest/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -186,7 +186,7 @@ const SuperadminDashboard = () => {
   const handleReject = async (id) => {
     if (!id) return;
     try {
-      const response = await fetch(`http://localhost:3000/api/request/deleterequest/${id}`, {
+      const response = await fetch(`https://backendjob-nu.vercel.app/api/request/deleterequest/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

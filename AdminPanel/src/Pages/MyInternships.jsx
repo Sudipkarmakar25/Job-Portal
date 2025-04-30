@@ -8,7 +8,7 @@ const MyInternships = () => {
     const controller = new AbortController(); // For cleanup
     const fetchJobs = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/jobs/myinternships", {
+        const res = await fetch("https://backendjob-nu.vercel.app/api/jobs/myinternships", {
           method: "GET",
           credentials: "include", // ✅ Send cookies like accessToken
           signal: controller.signal,
@@ -46,7 +46,7 @@ const MyInternships = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/api/jobs/delete/${jobId}`, {
+      const res = await fetch(`https://backendjob-nu.vercel.app/api/jobs/delete/${jobId}`, {
         method: "DELETE",
         credentials: "include", // Send cookie for authentication
       });

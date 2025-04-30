@@ -140,7 +140,7 @@ const CreateAccount = () => {
 
     try {
       // Send the POST request to the backend API using fetch
-      const response = await fetch("http://localhost:3000/api/request/addRequest", {
+      const response = await fetch("https://backendjob-nu.vercel.app/api/request/addRequest", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Tell the server we are sending JSON
