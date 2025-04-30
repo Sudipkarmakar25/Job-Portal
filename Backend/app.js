@@ -17,6 +17,7 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: 'https://shiny-stardust-db02b2.netlify.app',
+    origin:'https://gregarious-pixie-69d29d.netlify.app',
     credentials: true
   }));
   
