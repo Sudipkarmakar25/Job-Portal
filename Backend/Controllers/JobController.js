@@ -8,55 +8,47 @@ const DEFAULT_LOGO_URL = "https://example.com/default-logo.png";
 
 const addJob = async (req, res) => {
     try {
-        const { 
-            title, description, location, salary, jobType, 
-            company, requirements, experience, skills, 
-            applicationLink 
-        } = req.body;
-
-        let logoUrl = DEFAULT_LOGO_URL; 
-        let publicId = null;
-
-        if (req.file) {
-            const filePath = path.join(__dirname, "..", "Uploads", req.file.filename);
-
-
-            const uploadResult = await uploadToCloudinary(filePath);
-            logoUrl = uploadResult.url;
-            publicId = uploadResult.public_id;
-
-            fs.unlink(filePath, (err) => {
-                if (err) {
-                    console.error("Error deleting file:", err);
-                } else {
-                    console.log("Local file deleted successfully:", filePath);
-                }
-            });
-        }
-
-        const newJob = new Job({
-            title,
-            description: description || "", 
-            location,
-            salary,
-            jobType,
-            company,
-            logo: logoUrl,
-            publicId: publicId,
-            requirements: requirements || "",
-            experience: experience || "",
-            skills: skills ? skills.split(",") : [], 
-            applicationLink: applicationLink || "",
-            uploadedBy: req.user.id
-        });
-
-        await newJob.save();
-        return res.status(201).json({ message: "Job added successfully", job: newJob });
+      const {
+        title, description, location, salary, jobType,
+        company, requirements, experience, skills,
+        applicationLink
+      } = req.body;
+  
+      let logoUrl = DEFAULT_LOGO_URL;
+      let publicId = null;
+  
+      if (req.file && req.file.buffer) {
+        const uploadResult = await uploadToCloudinary(req.file.buffer);
+        logoUrl = uploadResult.secure_url;
+        publicId = uploadResult.public_id;
+      }
+      
+  
+      const newJob = new Job({
+        title,
+        description: description || "",
+        location,
+        salary,
+        jobType,
+        company,
+        logo: logoUrl,
+        publicId: publicId,
+        requirements: requirements || "",
+        experience: experience || "",
+        skills: skills ? skills.split(",") : [],
+        applicationLink: applicationLink || "",
+        uploadedBy: req.user.id
+      });
+  
+      await newJob.save();
+  
+      return res.status(201).json({ message: "Job added successfully", job: newJob });
     } catch (error) {
-        console.error("Error adding job:", error);
-        return res.status(500).json({ message: "Internal Server Error" });
+      console.error("Error adding job:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
     }
-};
+  };
+  
 
 const getAllJob = async (req, res) => {
     try {
