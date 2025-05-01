@@ -9,27 +9,25 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Connect to MongoDB
 connectDb();
 
 app.use(cors({
-  origin: '*',
-  credentials: true
+  origin: (origin, callback) => {
+    callback(null, true); // Allows all origins
+  },
+  credentials: true, // Allow cookies to be sent with requests
 }));
 
+// Middleware to parse incoming requests
 app.use(express.json());
 app.use(cookieParser());
 
+// API routes
 app.use('/api/request', RequestRoutes);
 app.use('/api/jobs', JobRoutes);
 
-app.options('*', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.status(200).end();
-});
-
+// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
