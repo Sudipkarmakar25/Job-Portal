@@ -3,48 +3,48 @@ const AdminRequest=require("../Models/AdminRequest")
 const DEFAULT_LOGO_URL = "https://example.com/default-logo.png"; 
 
 const addJob = async (req, res) => {
-  try {
-    const {
-      title,
-      description,
-      location,
-      salary,
-      jobType,
-      company,
-      requirements,
-      experience,
-      skills,
-      applicationLink,
-      logoLink // new field: expected from frontend
-    } = req.body;
-
-    const logoUrl = logoLink || DEFAULT_LOGO_URL;
-
-    const newJob = new Job({
-      title,
-      description: description || "",
-      location,
-      salary,
-      jobType,
-      company,
-      logo: logoUrl,
-      publicId: null, // no upload means no Cloudinary ID
-      requirements: requirements || "",
-      experience: experience || "",
-      skills: skills ? skills.split(",") : [],
-      applicationLink: applicationLink || "",
-      uploadedBy: req.user.id
-    });
-
-    await newJob.save();
-
-    return res.status(201).json({ message: "Job added successfully", job: newJob });
-  } catch (error) {
-    console.error("Error adding job:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
+    try {
+        const {
+          title,
+          description,
+          location,
+          salary,
+          jobType,
+          company,
+          logo,
+          requirements,
+          experience,
+          skills,
+          applicationLink
+        } = req.body;
+    
+        const finalLogo = logo && logo.trim() !== ""
+          ? logo
+          : "https://your-default-logo.com/default.png"; // change this as needed
+    
+        const newJob = new Job({
+          title,
+          description,
+          location,
+          salary,
+          jobType,
+          company,
+          logo: finalLogo,
+          requirements,
+          experience,
+          skills,
+          applicationLink,
+        });
+    
+        await newJob.save();
+    
+        res.status(201).json({ message: "Job added successfully", job: newJob });
+      } catch (error) {
+        console.error("Error adding job:", error);
+        res.status(500).json({ message: "Server error while adding job" });
+      }
+  };
+  
   
 
 const getAllJob = async (req, res) => {

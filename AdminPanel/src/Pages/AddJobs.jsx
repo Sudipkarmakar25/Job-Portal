@@ -25,33 +25,39 @@ const AddJobs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Basic required fields check
     const { company, title, jobType, logo, location, salary, applicationLink } = jobData;
     if (!company || !title || !jobType || !logo || !location || !salary || !applicationLink) {
       alert("Please fill all required fields.");
       return;
     }
-
+  
+    // If logo is empty, set it to the default logo URL
+    const finalJobData = {
+      ...jobData,
+      logo: logo.trim() === "" ? "https://your-default-logo.com/default.png" : logo
+    };
+  
     try {
-      // Make the API request with JSON data
+      // Make the API request with the updated logo
       const response = await fetch("https://backendjob-nu.vercel.app/api/jobs/jobs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(jobData),
+        body: JSON.stringify(finalJobData),
         credentials: "include",
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to add job.");
       }
-
+  
       const data = await response.json();
       console.log("Job Added Successfully:", data);
       alert("Job Added Successfully!");
-
+  
       // Reset form
       setJobData({
         title: "",
@@ -66,13 +72,14 @@ const AddJobs = () => {
         skills: "",
         applicationLink: "",
       });
-      
+  
       navigate("/");
     } catch (error) {
       console.error("Error submitting job:", error);
       alert("Error submitting job.");
     }
   };
+  
 
   return (
     <div className="bg-amber-100 shadow-md flex flex-col min-h-screen">
