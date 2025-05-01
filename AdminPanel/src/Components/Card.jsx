@@ -1,76 +1,256 @@
-import React from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Card = ({
-    _id,
-  title,
-  description,
-  location,
-  salary,
-  jobType,
-  company,
-  logo,
-  requirements,
-  experience,
-  skills,
-  applicationLink,
-  onDelete
-}) => {
+const AddJobs = () => {
+  const navigate = useNavigate();
+
+  const [jobData, setJobData] = useState({
+    title: "",
+    description: "",
+    location: "",
+    salary: "",
+    jobType: "Internship",
+    company: "",
+    logo: "",
+    requirements: "",
+    experience: "",
+    skills: "",
+    applicationLink: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setJobData({ ...jobData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Basic required fields check
+    const { company, title, jobType, logo, location, salary, applicationLink } = jobData;
+    if (!company || !title || !jobType || !logo || !location || !salary || !applicationLink) {
+      alert("Please fill all required fields.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+
+      formData.append("company", company);
+      formData.append("title", title);
+      formData.append("description", jobData.description || "");
+      formData.append("location", location);
+      formData.append("salary", salary);
+      formData.append("jobType", jobType);
+      formData.append("requirements", jobData.requirements || "");
+      formData.append("experience", jobData.experience || "");
+      formData.append("skills", jobData.skills || "");
+      formData.append("applicationLink", applicationLink);
+
+      const response = await fetch("https://backendjob-nu.vercel.app/api/jobs/jobs", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add job.");
+      }
+
+      const data = await response.json();
+      console.log("Job Added Successfully:", data);
+      alert("Job Added Successfully!");
+
+      // Reset form
+      setJobData({
+        title: "",
+        description: "",
+        location: "",
+        salary: "",
+        jobType: "Internship",
+        company: "",
+        logo: "",
+        requirements: "",
+        experience: "",
+        skills: "",
+        applicationLink: "",
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error submitting job:", error);
+      alert("Error submitting job.");
+    }
+  };
+
   return (
-    <div className="bg-amber-200 rounded-xl shadow-md flex flex-col w-[150%] min-h-[160px] p-4 justify-between overflow-hidden">
+    <div className="bg-amber-100 shadow-md flex flex-col min-h-screen">
+      <div className="bg-amber-50 shadow-md w-2/3 mx-auto mt-10 p-6 rounded-lg">
+        <h2 className="text-3xl font-bold text-center mb-6">Add Job</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
 
-      {/* Top Section */}
-      <div className="flex items-start gap-4">
-        {/* Logo */}
-        <div className="w-16 h-16 flex-shrink-0 mt-1">
-          {logo ? (
-            <img src={logo} alt={`${company} logo`} className="w-full h-full object-contain rounded" />
-          ) : (
-            <div className="w-full h-full bg-gray-200 rounded flex items-center justify-center text-xs text-gray-600">
-              No Logo
-            </div>
-          )}
-        </div>
-
-        {/* Info Section */}
-        <div className="flex flex-col flex-grow gap-1 overflow-hidden">
-          <h2 className="text-lg font-semibold truncate">🔖 <span className="font-medium">Title:</span> {title || "Untitled Job"}</h2>
-          <p className="text-sm text-gray-600 truncate">🏢 <span className="font-medium">Company:</span> {company}</p>
-          <div className="flex flex-wrap text-sm gap-4 mt-1 text-gray-700">
-            <span>📍 <span className="font-medium">Location:</span> {location || "N/A"}</span>
-            <span>💰 <span className="font-medium">Salary:</span> {salary || "Not mentioned"}</span>
-            <span>🎯 <span className="font-medium">Experience:</span> {experience || "None"}</span>
-            <span>📂 <span className="font-medium">Type:</span> {jobType || "N/A"}</span>
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Company Logo (URL): <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="logo"
+              value={jobData.logo}
+              onChange={handleChange}
+              placeholder="Enter Logo URL"
+              className="w-full p-2 border rounded"
+              required
+            />
           </div>
-          {skills && (
-            <p className="text-sm text-gray-700 truncate">🛠️ <span className="font-medium">Skills:</span> {skills}</p>
-          )}
-          {requirements && (
-            <p className="text-sm text-gray-700 truncate">📌 <span className="font-medium">Requirements:</span> {requirements}</p>
-          )}
-        </div>
-      </div>
 
-      {/* Button Section */}
-      <div className="flex justify-end gap-2 mt-4">
-        {applicationLink && (
-          <a
-            href={applicationLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1 bg-teal-500 text-white text-sm font-semibold rounded hover:bg-teal-600 transition"
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Company Name: <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="company"
+              value={jobData.company}
+              onChange={handleChange}
+              placeholder="Enter Company Name"
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Job Title: <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="title"
+              value={jobData.title}
+              onChange={handleChange}
+              placeholder="Enter Job Title"
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">Description:</label>
+            <textarea
+              name="description"
+              value={jobData.description}
+              onChange={handleChange}
+              placeholder="Enter Job Description"
+              className="w-full p-2 border rounded"
+            ></textarea>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Location: <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={jobData.location}
+              onChange={handleChange}
+              placeholder="Enter Location"
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Salary: <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="salary"
+              value={jobData.salary}
+              onChange={handleChange}
+              placeholder="Enter Salary"
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Job Type: <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="jobType"
+              value={jobData.jobType}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            >
+              <option value="Internship">Internship</option>
+              <option value="Job">Job</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Application Link: <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="applicationLink"
+              value={jobData.applicationLink}
+              onChange={handleChange}
+              placeholder="Enter Application Link"
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">Requirements:</label>
+            <textarea
+              name="requirements"
+              value={jobData.requirements}
+              onChange={handleChange}
+              placeholder="Enter Job Requirements"
+              className="w-full p-2 border rounded"
+            ></textarea>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">Experience:</label>
+            <input
+              type="text"
+              name="experience"
+              value={jobData.experience}
+              onChange={handleChange}
+              placeholder="Enter Experience Required"
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold">Skills:</label>
+            <input
+              type="text"
+              name="skills"
+              value={jobData.skills}
+              onChange={handleChange}
+              placeholder="Enter Required Skills"
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-amber-200 text-red-700 font-bold text-xl p-2 rounded-lg hover:bg-amber-300"
           >
-            📄 Details
-          </a>
-        )}
-        <button
-          onClick={onDelete}
-          className="px-3 py-1 bg-red-500 text-white text-sm font-semibold rounded hover:bg-red-600 transition"
-        >
-          🗑️ Delete
-        </button>
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );
 };
 
-export default Card;
+export default AddJobs;
