@@ -14,7 +14,7 @@ connectDb();
 
 // List of allowed frontend origins (Netlify URLs)
 const allowedOrigins = [
-  "https://capable-dieffenbachia-b3f3e0.netlify.app",
+  "https://adminpanel-gamma-rust.vercel.app/",
   "https://gregarious-pixie-69d29d.netlify.app"
 ];
 
