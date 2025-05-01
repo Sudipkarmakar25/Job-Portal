@@ -4,46 +4,51 @@ const DEFAULT_LOGO_URL = "https://example.com/default-logo.png";
 
 const addJob = async (req, res) => {
     try {
-        const {
-          title,
-          description,
-          location,
-          salary,
-          jobType,
-          company,
-          logo,
-          requirements,
-          experience,
-          skills,
-          applicationLink
-        } = req.body;
+      const {
+        title,
+        description,
+        location,
+        salary,
+        jobType,
+        company,
+        logo,
+        requirements,
+        experience,
+        skills,
+        applicationLink
+      } = req.body;
+  
+      const finalLogo = logo && logo.trim() !== ""
+        ? logo
+        : "https://your-default-logo.com/default.png"; // change this as needed
+  
     
-        const finalLogo = logo && logo.trim() !== ""
-          ? logo
-          : "https://your-default-logo.com/default.png"; // change this as needed
-    
-        const newJob = new Job({
-          title,
-          description,
-          location,
-          salary,
-          jobType,
-          company,
-          logo: finalLogo,
-          requirements,
-          experience,
-          skills,
-          applicationLink,
-        });
-    
-        await newJob.save();
-    
-        res.status(201).json({ message: "Job added successfully", job: newJob });
-      } catch (error) {
-        console.error("Error adding job:", error);
-        res.status(500).json({ message: "Server error while adding job" });
-      }
+  
+      const newJob = new Job({
+        title,
+        description,
+        location,
+        salary,
+        jobType,
+        company,
+        logo: finalLogo,
+        requirements,
+        experience,
+        skills,
+        applicationLink,
+        uploadedBy: req.user.id,  
+
+      });
+  
+      await newJob.save();
+  
+      res.status(201).json({ message: "Job added successfully", job: newJob });
+    } catch (error) {
+      console.error("Error adding job:", error);
+      res.status(500).json({ message: "Server error while adding job" });
+    }
   };
+  
   
   
 
