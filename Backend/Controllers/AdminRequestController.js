@@ -142,7 +142,6 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-   
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required." });
     }
@@ -151,6 +150,7 @@ const loginUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
+
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid credentials." });
@@ -160,16 +160,18 @@ const loginUser = async (req, res) => {
 
     const loggedInUser = await AdminRequest.findById(user._id).select("-password");
 
-    const options = {
+    // ✅ Define cookie options once
+    const cookieOptions = {
       httpOnly: true,
-      secure: false, 
-      sameSite: "Lax", 
-      path: "/", 
-      maxAge: 24 * 60 * 60 * 1000, 
+      secure: true,       // true in production (HTTPS)
+      sameSite: 'None',   // Needed for cross-origin
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
     };
-    
 
-    return res.status(200).cookie("accessToken", token, options).json({
+    // ✅ Set a single cookie (e.g., accessToken)
+    res.cookie("accessToken", token, cookieOptions);
+
+    return res.status(200).json({
       user: loggedInUser,
       accessToken: token,
       message: "User logged in successfully",
@@ -179,6 +181,7 @@ const loginUser = async (req, res) => {
     return res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 const logoutUser = async (req, res) => {
   try {
