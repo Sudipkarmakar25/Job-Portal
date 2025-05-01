@@ -43,8 +43,10 @@ const CheckAdminorSuperAdmin = async (req, res, next) => {
   
     const token = req.cookies?.accessToken || req.header("Authorization")?.split(" ")[1];
     if (!token) {
+      console.log("NO token found");
       return res.status(402).json({ message: "Unauthorized request! Please log in." });
     }
+    console.log("token found");
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     const user = await AdminRequest.findById(payload.id).select("-password"); 
 

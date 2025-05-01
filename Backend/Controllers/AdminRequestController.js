@@ -160,15 +160,15 @@ const loginUser = async (req, res) => {
 
     const loggedInUser = await AdminRequest.findById(user._id).select("-password");
 
-    // ✅ Define cookie options once
+    
     const cookieOptions = {
       httpOnly: true,
-      secure: true,       // true in production (HTTPS)
-      sameSite: 'None',   // Needed for cross-origin
-      maxAge: 24 * 60 * 60 * 1000 // 1 day
+      secure: true,       
+      sameSite: 'None',   
+      maxAge: 24 * 60 * 60 * 1000 
     };
 
-    // ✅ Set a single cookie (e.g., accessToken)
+    
     res.cookie("accessToken", token, cookieOptions);
 
     return res.status(200).json({
