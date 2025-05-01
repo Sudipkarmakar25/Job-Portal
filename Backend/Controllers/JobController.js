@@ -1,9 +1,5 @@
-const fs = require("fs");  
-const path = require("path");
 const Job = require("../Models/Job");
 const AdminRequest=require("../Models/AdminRequest")
-const { uploadToCloudinary } = require("../Helpers/CloudinaryHelper");
-const { deleteFromCloudinary } = require('../Helpers/deleteFromCloudinary');
 const DEFAULT_LOGO_URL = "https://example.com/default-logo.png"; 
 
 const addJob = async (req, res) => {
@@ -97,22 +93,7 @@ const deleteJob = async (req, res) => {
             return res.status(404).json({ message: "Job not found", success: false });
         }
 
-        if (job.uploadedBy.toString() !== adminId) {
-            return res.status(403).json({
-                message: "Unauthorized: Only the uploader can delete this job",
-                success: false
-            });
-        }
-
         
-        if (job.publicId) {
-            try {
-                await deleteFromCloudinary(job.publicId);
-            } catch (cloudErr) {
-                console.error("Cloudinary deletion error:", cloudErr);
-            }
-        }
-
        
         await Job.findByIdAndDelete(jobId);
 

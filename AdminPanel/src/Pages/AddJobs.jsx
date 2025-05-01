@@ -165,7 +165,6 @@ const AddJobs = () => {
               required
             />
           </div>
-
           <div className="flex flex-col">
             <label className="font-semibold">
               Job Type: <span className="text-red-500">*</span>
@@ -181,7 +180,6 @@ const AddJobs = () => {
               <option value="Job">Job</option>
             </select>
           </div>
-
           <div className="flex flex-col">
             <label className="font-semibold">
               Application Link: <span className="text-red-500">*</span>
@@ -196,7 +194,6 @@ const AddJobs = () => {
               required
             />
           </div>
-
           <div className="flex flex-col">
             <label className="font-semibold">Requirements:</label>
             <textarea
@@ -207,7 +204,6 @@ const AddJobs = () => {
               className="w-full p-2 border rounded"
             ></textarea>
           </div>
-
           <div className="flex flex-col">
             <label className="font-semibold">Experience:</label>
             <input
@@ -231,7 +227,6 @@ const AddJobs = () => {
               className="w-full p-2 border rounded"
             />
           </div>
-
           <button
             type="submit"
             className="w-full bg-amber-200 text-red-700 font-bold text-xl p-2 rounded-lg hover:bg-amber-300"
