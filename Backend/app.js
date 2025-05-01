@@ -14,21 +14,22 @@ connectDb();
 
 // List of allowed frontend origins (Netlify URLs)
 const allowedOrigins = [
-  "https://adminpanel-gamma-rust.vercel.app/",
+  "https://adminpanel-gamma-rust.vercel.app",
   "https://gregarious-pixie-69d29d.netlify.app"
 ];
 
-// CORS middleware for handling cross-origin cookies securely
 app.use(cors({
-  origin: (origin, callback) => {
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true // required to allow cookies
 }));
+
+
 
 // Middleware to parse incoming requests
 app.use(express.json());
